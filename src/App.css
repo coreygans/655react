@@ -293,4 +293,9 @@ body {
 .c-cb > input[type="checkbox"]:checked + label::after {
   opacity: 1;
 }
+
+.c-cb > input[type="checkbox"]:checked + label {
+  text-decoration: line-through; 
+}
+
 /* End checkbox styles */

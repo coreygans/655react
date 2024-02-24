@@ -16,6 +16,7 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App(props) {
   const [tasks, setTasks] = useState(props.tasks);
+  const [parentTasks, setParentTasks] = useState([]);
   const [filter, setFilter] = useState("All");
   const filterList = FILTER_NAMES.map((name) => (
     <FilterButton
@@ -25,21 +26,46 @@ function App(props) {
       setFilter={setFilter}
     />
   ));
-  const taskList = tasks.filter(FILTER_MAP[filter]).map((task) => (
-    <Todo
-      id={task.id}
-      name={task.name}
-      completed={task.completed}
-      key={task.id}
-      toggleTaskCompleted={toggleTaskCompleted}
-      deleteTask={deleteTask}
-      editTask={editTask}
-    />
-  ));
-  function addTask(name) {
-    const newTask = { id: `todo-${nanoid()}`, name, completed: false };
-    setTasks([...tasks, newTask]);
+  const taskList = tasks
+    .filter(FILTER_MAP[filter])
+    .map((task) => (
+      <Todo
+        id={task.id}
+        name={task.name}
+        completed={task.completed}
+        key={task.id}
+        toggleTaskCompleted={toggleTaskCompleted}
+        deleteTask={deleteTask}
+        editTask={editTask}
+      />
+    ));
+
+  function addTask(name, isSubTask, parentTaskId) {
+    if (isSubTask && parentTaskId) {
+      // If it's a subtask, link to parent task
+      const updatedTasks = tasks.map((task) =>
+        task.id === parentTaskId
+          ? {
+              ...task,
+              subtasks: [
+                ...(task.subtasks || []),
+                { id: nanoid(), name, completed: false },
+              ],
+            }
+          : task
+      );
+      setTasks(updatedTasks);
+    } else {
+      const newTask = { id: `todo-${nanoid()}`, name, completed: false };
+      setTasks([...tasks, newTask]);
+
+      if (!isSubTask) {
+        // Add regular task to the parentTasks list
+        setParentTasks([...parentTasks, newTask]);
+      }
+    }
   }
+
   function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map((task) => {
       if (id === task.id) {
@@ -70,7 +96,7 @@ function App(props) {
   return (
     <div className="todoapp stack-large">
       <h1>Todo List</h1>
-      <Form addTask={addTask} />
+      <Form addTask={addTask} parentTasks={parentTasks} />
       <div className="filters btn-group stack-exception">{filterList}</div>
       <h2 id="list-heading">{headingText}</h2>
       <ul

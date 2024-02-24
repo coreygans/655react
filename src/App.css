@@ -215,6 +215,11 @@ body {
 .todo > * {
   flex: 0 0 100%;
 }
+.subtodo {
+  margin-left: 40px;
+  padding-top: 10px;
+}
+
 .todo-text {
   border: 2px solid #565656;
   min-height: 4.4rem;

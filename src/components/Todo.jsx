@@ -57,6 +57,15 @@ function Todo(props) {
           {props.name}
         </label>
       </div>
+      {props.subtasks && props.subtasks.length > 0 && (
+        <ul className="subtask-list">
+          {props.subtasks.map((subtask) => (
+            <li key={subtask.id} className="subtask">
+              {subtask.name}
+            </li>
+          ))}
+        </ul>
+      )}
       <div className="btn-group">
         <button type="button" className="btn" onClick={() => setEditing(true)}>
           Edit <span className="visually-hidden">{props.name}</span>
@@ -67,11 +76,12 @@ function Todo(props) {
           onClick={() => props.deleteTask(props.id)}>
           Delete <span className="visually-hidden">{props.name}</span>
         </button>
+    
       </div>
     </div>
   );
 
-  return <li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>;
+  return <li className={`todo>${props.subtasks ? " with-subtasks" : ""}`}>{isEditing ? editingTemplate : viewTemplate} </li>;
 }
 
 export default Todo;

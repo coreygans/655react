@@ -98,7 +98,7 @@ function Todo(props) {
                 <button
                   type="button"
                   className="btn btn__danger subtask-delete"
-                  onClick={() => props.deleteTask(subtask.id)}>
+                  onClick={() => props.deleteSubtask(props.id,subtask.id)}>
                   Delete subtask <span className="visually-hidden">{subtask.name}</span>
                 </button>
               </div>

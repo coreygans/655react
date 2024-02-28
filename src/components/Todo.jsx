@@ -8,7 +8,7 @@ function Todo(props) {
     setNewName(e.target.value);
   }
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault();
     props.editTask(props.id, newName);
     setNewName("");
@@ -58,13 +58,22 @@ function Todo(props) {
         </label>
       </div>
       {props.subtasks && props.subtasks.length > 0 && (
-        <ul className="subtask-list">
+        <div className="subtask-list">
           {props.subtasks.map((subtask) => (
-            <li key={subtask.id} className="subtask">
-              {subtask.name}
-            </li>
+            <div className="subtask">
+            <input
+                id={subtask.id}
+                type="checkbox"
+                defaultChecked={subtask.completed}
+                onChange={() => props.toggleTaskCompleted(subtask.id)}
+              />
+              <label className="subtask-control" htmlFor={subtask.id}>
+                {subtask.name}
+              </label>
+            
+            </div>
           ))}
-        </ul>
+        </div>
       )}
       <div className="btn-group">
         <button type="button" className="btn" onClick={() => setEditing(true)}>
@@ -76,12 +85,15 @@ function Todo(props) {
           onClick={() => props.deleteTask(props.id)}>
           Delete <span className="visually-hidden">{props.name}</span>
         </button>
-    
       </div>
     </div>
   );
 
-  return <li className={`todo>${props.subtasks ? " with-subtasks" : ""}`}>{isEditing ? editingTemplate : viewTemplate} </li>;
+  return (
+    <li className={`todo>${props.subtasks ? " with-subtasks" : ""}`}>
+      {isEditing ? editingTemplate : viewTemplate}{" "}
+    </li>
+  );
 }
 
 export default Todo;

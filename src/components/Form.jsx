@@ -23,6 +23,7 @@ function Form(props) {
     } else {
       if (isSubTask && selectedParentTask !== null) {
         props.addTask(name, isSubTask, selectedParentTask);
+        console.log("Here are the props being set:" + name +" " + isSubTask + " " + selectedParentTask);
       } else {
         props.addTask(name);
       }

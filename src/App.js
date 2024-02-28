@@ -33,7 +33,10 @@ function App(props) {
         id={task.id}
         name={task.name}
         completed={task.completed}
+        subtasks={task.subtasks}
         key={task.id}
+        isSubTask={task.isSubTask}
+        setSelectedParentTask={task.setSelectedParentTask}
         toggleTaskCompleted={toggleTaskCompleted}
         deleteTask={deleteTask}
         editTask={editTask}
@@ -43,18 +46,23 @@ function App(props) {
   function addTask(name, isSubTask, parentTaskId) {
     if (isSubTask && parentTaskId) {
       // If it's a subtask, link to parent task
-      const updatedTasks = tasks.map((task) =>
-        task.id === parentTaskId
-          ? {
-              ...task,
-              subtasks: [
-                ...(task.subtasks || []),
-                { id: nanoid(), name, completed: false },
-              ],
-            }
-          : task
-      );
-      setTasks(updatedTasks);
+      const parentTask = tasks.find((task) => task.id === parentTaskId);
+
+      if (parentTask) {
+        const subtaskId = `subtask-${nanoid()}`;
+        const updatedTasks = tasks.map((task) =>
+          task.id === parentTaskId
+            ? {
+                ...task,
+                subtasks: [
+                  ...(task.subtasks || []),
+                  { id: subtaskId, name, completed: false },
+                ],
+              }
+            : task
+        );
+        setTasks(updatedTasks);
+      }
     } else {
       const newTask = { id: `todo-${nanoid()}`, name, completed: false };
       setTasks([...tasks, newTask]);

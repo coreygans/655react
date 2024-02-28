@@ -230,8 +230,8 @@ body {
   box-shadow: inset 0 0 0 2px;
 }
 /* End todo item styles */
-/* Checkbox styles */
-.c-cb {
+/* Parent Checkbox styles */
+.c-cb  {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   clear: left;
@@ -300,6 +300,83 @@ body {
 }
 
 .c-cb > input[type="checkbox"]:checked + label {
+  text-decoration: line-through; 
+}
+
+/* Parent End checkbox styles */
+
+/* Subtask Checkbox styles */
+.subtask  {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  clear: left;
+  display: block;
+  font-family: Arial, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.25;
+  left: 30px;
+  min-height: 44px;
+  padding-left: 40px;
+  margin-top: 10px;
+  position: relative;
+}
+.subtask  > label::before,
+.subtask  > input[type="checkbox"] {
+  box-sizing: border-box;
+  height: 44px;
+  left: -2px;
+  top: -2px;
+  width: 44px;
+}
+.subtask  > input[type="checkbox"] {
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+}
+.subtask  > label {
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  margin-bottom: 0;
+  padding: 8px 15px 5px;
+  touch-action: manipulation;
+}
+.subtask  > label::before {
+  background: transparent;
+  border: 2px solid currentcolor;
+  content: "";
+  position: absolute;
+}
+.subtask  > input[type="checkbox"]:focus-visible + label::before {
+  border-width: 4px;
+  outline: 3px dashed #228bec;
+}
+.subtask  > label::after {
+  background: transparent;
+  border: solid;
+  border-width: 0 0 5px 5px;
+  border-top-color: transparent;
+  box-sizing: content-box;
+  content: "";
+  height: 7px;
+  left: 9px;
+  opacity: 0;
+  position: absolute;
+  top: 11px;
+  transform: rotate(-45deg);
+  width: 18px;
+}
+.subtask  > input[type="checkbox"]:checked + label::after {
+  opacity: 1;
+}
+
+.subtask  > input[type="checkbox"]:checked + label {
   text-decoration: line-through; 
 }
 

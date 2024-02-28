@@ -41,6 +41,8 @@ function App(props) {
         toggleTaskCompleted={toggleTaskCompleted}
         deleteTask={deleteTask}
         editTask={editTask}
+        editSubtask={editSubtask}
+        deleteSubtask={deleteSubtask}
       />
     ));
   console.log(taskList);
@@ -90,6 +92,20 @@ function App(props) {
     setTasks(remainingTasks);
   }
 
+  function deleteSubtask(taskId, subtaskId) {
+    const updatedTasks = tasks.map((task) => {
+      if (taskId === task.id) {
+        const updatedSubtasks = task.subtasks.filter((subtask) => subtask.id !== subtaskId);
+  
+        return { ...task, subtasks: updatedSubtasks };
+      }
+  
+      return task;
+    });
+  
+    setTasks(updatedTasks);
+  }
+
   function editTask(id, newName) {
     const editedTaskList = tasks.map((task) => {
       if (id === task.id) {
@@ -100,6 +116,26 @@ function App(props) {
     setTasks(editedTaskList);
   }
 
+  function editSubtask(taskId, subtaskId, newName) {
+    const updatedTasks = tasks.map((task) => {
+      if (taskId === task.id) {
+        const updatedSubtasks = task.subtasks.map((subtask) => {
+          if (subtaskId === subtask.id) {
+            return { ...subtask, name: newName };
+          }
+          return subtask;
+        });
+  
+        return { ...task, subtasks: updatedSubtasks };
+      }
+  
+      return task;
+    });
+  
+    setTasks(updatedTasks);
+  }
+
+ 
   const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
   const headingText = `${taskList.length} ${tasksNoun} remaining`;
   return (

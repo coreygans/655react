@@ -3,24 +3,38 @@ import { useState } from "react";
 function Todo(props) {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState("");
+  const [editingSubtaskId, setEditingSubtaskId] = useState(null);
 
   function handleChange(e) {
     setNewName(e.target.value);
   }
 
+  function handleSubtaskEdit(subtaskId) {
+    setEditing(true);
+    setEditingSubtaskId(subtaskId);
+    setNewName("");
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    props.editTask(props.id, newName);
+    if (editingSubtaskId !== null) {
+      props.editSubtask(props.id, editingSubtaskId, newName);
+    } else {
+      // If not editing a subtask, call the function for main task edit
+      props.editTask(props.id, newName);
+    }
     setNewName("");
     setEditing(false);
+    setEditingSubtaskId(null);
   }
 
   const editingTemplate = (
-
     <form className="stack-small" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="todo-label" htmlFor={props.id}>
-          New name for {props.name}
+          New name for {editingSubtaskId
+          ? props.subtasks.find(subtask => subtask.id === editingSubtaskId).name
+          : props.name}
         </label>
         <input
           id={props.id}
@@ -34,7 +48,10 @@ function Todo(props) {
         <button
           type="button"
           className="btn todo-cancel"
-          onClick={() => setEditing(false)}>
+          onClick={() => {
+            setEditing(false);
+            setEditingSubtaskId(null);
+          }}>
           Cancel
           <span className="visually-hidden">renaming {props.name}</span>
         </button>
@@ -44,7 +61,6 @@ function Todo(props) {
         </button>
       </div>
     </form>
-
   );
   const viewTemplate = (
     <div className="stack-small">
@@ -75,15 +91,15 @@ function Todo(props) {
               <div className="btn-group">
                 <button
                   type="button"
-                  className="btn"
-                  onClick={() => setEditing(true)}>
-                  Edit <span className="visually-hidden">{subtask.name}</span>
+                  className="btn subtask-edit"
+                  onClick={() => handleSubtaskEdit(subtask.id)}>
+                  Edit subtask <span className="visually-hidden">{subtask.name}</span>
                 </button>
                 <button
                   type="button"
-                  className="btn btn__danger"
+                  className="btn btn__danger subtask-delete"
                   onClick={() => props.deleteTask(subtask.id)}>
-                  Delete <span className="visually-hidden">{subtask.name}</span>
+                  Delete subtask <span className="visually-hidden">{subtask.name}</span>
                 </button>
               </div>
             </div>

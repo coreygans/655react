@@ -16,6 +16,7 @@ function Todo(props) {
   }
 
   const editingTemplate = (
+
     <form className="stack-small" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="todo-label" htmlFor={props.id}>
@@ -43,6 +44,7 @@ function Todo(props) {
         </button>
       </div>
     </form>
+
   );
   const viewTemplate = (
     <div className="stack-small">
@@ -60,8 +62,8 @@ function Todo(props) {
       {props.subtasks && props.subtasks.length > 0 && (
         <div className="subtask-list">
           {props.subtasks.map((subtask) => (
-            <div className="subtask">
-            <input
+            <div className="subtask" key={subtask.id}>
+              <input
                 id={subtask.id}
                 type="checkbox"
                 defaultChecked={subtask.completed}
@@ -70,7 +72,20 @@ function Todo(props) {
               <label className="subtask-control" htmlFor={subtask.id}>
                 {subtask.name}
               </label>
-            
+              <div className="btn-group">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => setEditing(true)}>
+                  Edit <span className="visually-hidden">{subtask.name}</span>
+                </button>
+                <button
+                  type="button"
+                  className="btn btn__danger"
+                  onClick={() => props.deleteTask(subtask.id)}>
+                  Delete <span className="visually-hidden">{subtask.name}</span>
+                </button>
+              </div>
             </div>
           ))}
         </div>

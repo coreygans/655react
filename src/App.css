@@ -229,6 +229,14 @@ body {
 .todo-text:focus-visible {
   box-shadow: inset 0 0 0 2px;
 }
+
+.isSub{
+  padding: 5px 0;
+}
+.parentSelect{
+  padding: 5px 0;
+}
+
 /* End todo item styles */
 /* Parent Checkbox styles */
 .c-cb  {

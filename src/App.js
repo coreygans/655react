@@ -6,6 +6,7 @@ import Todo from "./components/Todo";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 
+//Filters aren't working for subtasks
 const FILTER_MAP = {
   All: () => true,
   Active: (task) => !task.completed,
@@ -42,7 +43,7 @@ function App(props) {
         editTask={editTask}
       />
     ));
-
+  console.log(taskList);
   function addTask(name, isSubTask, parentTaskId) {
     if (isSubTask && parentTaskId) {
       // If it's a subtask, link to parent task
@@ -56,7 +57,7 @@ function App(props) {
                 ...task,
                 subtasks: [
                   ...(task.subtasks || []),
-                  { id: subtaskId, name, completed: false },
+                  { id: subtaskId, name, key: subtaskId, completed: false },
                 ],
               }
             : task

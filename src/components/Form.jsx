@@ -23,9 +23,24 @@ function Form(props) {
     } else {
       if (isSubTask && selectedParentTask !== null) {
         props.addTask(name, isSubTask, selectedParentTask);
-        console.log("Here are the props being set:" + name +" " + isSubTask + " " + selectedParentTask);
+        console.log(
+          "Here are the props being set:" +
+            name +
+            " " +
+            isSubTask +
+            " " +
+            selectedParentTask
+        );
       } else {
         props.addTask(name);
+        console.log(
+          "Here are the props being set:" +
+            name +
+            " " +
+            isSubTask +
+            " " +
+            selectedParentTask
+        );
       }
       setName("");
       setSubTask(false);
@@ -48,26 +63,26 @@ function Form(props) {
         value={name}
         onChange={handleChange}
       />
-      <label htmlFor="new-subtask" className="label__sm">
-        Is this a subtask?
-      </label>
-      <input
-        type="checkbox"
-        id="new-subtask"
-        value={isSubTask}
-        onChange={handleCheckboxChange}
-      />
-           {isSubTask && props.parentTasks.length > 0 && (
-
-        <div>
+      <div className="isSub">
+        <label htmlFor="new-subtask" className="label__sm">
+          Is this a subtask?
+        </label>
+        <input
+          type="checkbox"
+          id="new-subtask"
+          value={isSubTask}
+          onChange={handleCheckboxChange}
+        />
+      </div>
+      {isSubTask && props.parentTasks.length > 0 && (
+        <div className="parentSelect">
           <label htmlFor="parent-task-dropdown" className="label__sm">
             Select Parent Task:
           </label>
           <select
             id="parent-task-dropdown"
             onChange={handleDropdownChange}
-            value={selectedParentTask}
-          >
+            value={selectedParentTask}>
             <option value={null}>Select a Parent Task</option>
             {props.parentTasks.map((parentTask) => (
               <option key={parentTask.id} value={parentTask.id}>
@@ -76,7 +91,7 @@ function Form(props) {
             ))}
           </select>
         </div>
-           )}
+      )}
       <button type="submit" className="btn btn__primary btn__lg">
         Add
       </button>
